@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "filtrarFacturas";
+}
+
+<!DOCTYPE html>
+<head>
+    <title>Facturacion</title>
+</head>
+
+<body>
+    <h2>Facturas</h2>
+    <!--Cargue del metodo-->
+    @using (Html.BeginForm("filtrarFacturas", "Facturas"))
+    {
+        <table class="table table-bordered table-striped">
+
+            <tr>
+                <td>
+                    Ventas del dia:@Html.TextBox("datoBuscar")
+                </td>
+                <td>
+                    <input style="text-align:right" type="submit" name="name" value="Buscar" />
+                </td>
+            </tr>
+        </table>
+
+    }
+    <!--Tabla-->
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Juego</th>
+            <th>Cliente</th>
+            <th>Identificacion</th>
+            <th>Fecha del alquiler</th>
+        </tr>
+        @for (int i = 0; i < Model.Rows.Count; i++)
+        {
+            <tr>
+                <td>@Model.Rows[i][0]</td>
+                <td>@Model.Rows[i][1]</td>
+                <td>@Model.Rows[i][2]</td>
+                <td>@Model.Rows[i][3]</td>
+            </tr>
+        }
+    </table>
+    <!--Otras pestañas-->
+    <div class="card-footer">
+        <div class="d-flex justify-content-center links">
+            <a href="@Url.Action("RegistrarFactura","Facturas")">Registrar Facturas</a>
+        </div>
+    </div>
+
+</body>
