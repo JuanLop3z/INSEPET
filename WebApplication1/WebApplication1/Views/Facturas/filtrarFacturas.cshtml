@@ -43,6 +43,7 @@
                 <td>
                     <a href="@Url.Action("AgregarProductos", "Facturas", new { IdFactura = Model.Rows[i][0] })" class="btn btn-primary">Agregar Productos</a>
                     <a href="@Url.Action("EliminarFacturas", "Facturas", new { IdFactura = Model.Rows[i][0] })" class="btn btn-danger">Eliminar Factura</a>
+                    <a href="@Url.Action("VerFacturas", "Facturas", new { IdFactura = Model.Rows[i][0] })" class="btn btn-primary">Ver Factura</a>
                 </td>
             </tr>
         }

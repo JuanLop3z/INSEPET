@@ -1,0 +1,30 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Ver Facturas";
+}
+
+<h2>Ver Facturas</h2>
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <!--Tabla-->
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Id.Factura</th>
+            <th>Cliente</th>
+            <th>IdProducto</th>
+        </tr>
+        @for (int i = 0; i < Model.Rows.Count; i++)
+        {
+            <tr>
+                <td>@Model.Rows[i][0]</td>
+                <td>@Model.Rows[i][1]</td>
+                <td>@Model.Rows[i][2]</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No se encontraron facturas.</p>
+}

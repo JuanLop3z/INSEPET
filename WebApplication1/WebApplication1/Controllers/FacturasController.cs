@@ -15,6 +15,7 @@ namespace WebApplication1.Controllers
         private bool registrado;
         private string mensaje;
         private DataTable datos = new DataTable();
+        private DataTable facturas = new DataTable(); 
 
         //Usado para devolver el tipo de peticion con la vista a la vez
         public ActionResult RegistrarFactura()
@@ -39,6 +40,7 @@ namespace WebApplication1.Controllers
         {
             return View();
         }
+
 
         [HttpPost]
         public ActionResult RegistrarFactura(Facturas facturas)
@@ -85,7 +87,7 @@ namespace WebApplication1.Controllers
             {
 
                 cn.Open();
-                //Se ejecuta una sentencia SELECT par poder buscar las Facturas por Identificacion
+                
                 SqlDataAdapter sqlAD = new SqlDataAdapter("SELECT * from Facturas", cn);
 
                 sqlAD.Fill(datos);
@@ -175,6 +177,25 @@ namespace WebApplication1.Controllers
                 ViewData["Mensaje"] = mensaje;
                 return View();
             }
+        }
+
+
+        [HttpGet]
+        public ActionResult VerFacturas(int IdFactura) {
+
+            using (SqlConnection cn = new SqlConnection(ConexionDB.conexion))
+            {
+
+
+                string busquedaSQL = string.Format("SELECT F.IdFactura, C.Nombres AS Cliente, PF.IdProducto FROM Facturas F JOIN Clientes C ON F.IdCliente = C.Identificacion LEFT JOIN ProductosFactura PF ON F.IdFactura = PF.IdFactura WHERE F.IdFactura = {0}", IdFactura);
+                cn.Open();
+                SqlDataAdapter sqlAD = new SqlDataAdapter(busquedaSQL, cn);
+
+
+                sqlAD.Fill(facturas);
+            }
+
+            return View(facturas);
         }
     }
 }
