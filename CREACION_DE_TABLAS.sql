@@ -36,13 +36,18 @@ go
 --TABLA DE FACTURAS--
 CREATE TABLE Facturas(
 IdFactura int primary key identity (1,1),
-IdProducto int,
 IdCliente varchar(50),
-Estado bit default 1,
 Fecha datetime default getdate(),
-FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto),
 FOREIGN KEY (IdCliente) REFERENCES Clientes(Identificacion)
 )
 go
 
-SELECT c.Identificacion, c.Nombres, j.nombre AS factura, a.Fecha FROM clientes c INNER JOIN facturas a ON c.Identificacion = a.IdCliente INNER JOIN productos j ON a.IdProducto = j.IdProducto WHERE a.IdProducto IS NOT NULL
+
+--TABLA DE LOS PRODUCTOS DE LA FACTURA--
+Create table ProductosFactura(
+IdFactura int,
+IdProducto int,
+FOREIGN KEY (IdFactura) REFERENCES Facturas(IdFactura),
+FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto),
+)
+go

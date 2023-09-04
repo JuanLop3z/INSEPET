@@ -131,6 +131,7 @@
     <Compile Include="Models\ConexionDB.cs" />
     <Compile Include="Models\Facturas.cs" />
     <Compile Include="Models\Productos.cs" />
+    <Compile Include="Models\ProductosFactura.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,9 +176,11 @@
     <Content Include="Views\Productos\CrearProducto.cshtml" />
     <Content Include="Views\Productos\listarProductos.cshtml" />
     <Content Include="Views\Productos\Buscar.cshtml" />
-    <Content Include="Views\Facturas\filtrarVentas.cshtml" />
+    <Content Include="Views\Facturas\filtrarFacturas.cshtml" />
     <Content Include="Views\Facturas\listaFacturas.cshtml" />
     <Content Include="Views\Facturas\RegistrarFactura.cshtml" />
+    <Content Include="Views\Facturas\eliminarFacturas.cshtml" />
+    <Content Include="Views\Facturas\AgregarProductos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

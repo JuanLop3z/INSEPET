@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
         private DataTable datos = new DataTable();
 
         //Usado para devolver el tipo de peticion con la vista a la vez
-        public ActionResult RegistrarFacturas()
+        public ActionResult RegistrarFactura()
         {
             return View();
         }
@@ -30,6 +30,15 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        public ActionResult AgregarProductos()
+        {
+            return View();
+        }
+
+        public ActionResult EliminarFacturas()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult RegistrarFactura(Facturas facturas)
@@ -39,9 +48,8 @@ namespace WebApplication1.Controllers
             using (SqlConnection cn = new SqlConnection(ConexionDB.conexion))
             {
                 //se agregan los valores a el proceso sp_RegistrarAlquiler
-                SqlCommand cmd = new SqlCommand("sp_RegistrarFactura", cn);
-                cmd.Parameters.AddWithValue("IdClientes", facturas.IdClientes);
-                cmd.Parameters.AddWithValue("IdProductos", facturas.IdProductos);
+                SqlCommand cmd = new SqlCommand("sp_RegistrarFacturas", cn);
+                cmd.Parameters.AddWithValue("IdCliente", facturas.IdCliente);
                 cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                 cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -58,11 +66,11 @@ namespace WebApplication1.Controllers
 
             if (registrado)
             {
-                return RedirectToAction("listarAlquileres", "Facturas");
+                return RedirectToAction("listaFacturas", "Facturas");
             }
             else
             {
-                ViewData["Mensaje"] = "El producto no existe";
+                ViewData["Mensaje"] = mensaje;
                 return View();
             }
         }
@@ -78,7 +86,7 @@ namespace WebApplication1.Controllers
 
                 cn.Open();
                 //Se ejecuta una sentencia SELECT par poder buscar las Facturas por Identificacion
-                SqlDataAdapter sqlAD = new SqlDataAdapter("SELECT c.Identificacion, c.Nombres, j.nombre AS factura, a.Fecha FROM clientes c INNER JOIN facturas a ON c.Identificacion = a.IdCliente INNER JOIN productos j ON a.IdProducto = j.IdProducto WHERE a.IdProducto IS NOT NULL", cn);
+                SqlDataAdapter sqlAD = new SqlDataAdapter("SELECT * from Facturas", cn);
 
                 sqlAD.Fill(datos);
 
@@ -90,7 +98,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        public ActionResult filtrarVentas(string datoBuscar)
+        public ActionResult filtrarFacturas(string datoBuscar)
         {
             using (SqlConnection cn = new SqlConnection(ConexionDB.conexion))
             {
@@ -100,7 +108,7 @@ namespace WebApplication1.Controllers
                 string fechaFin = DateTime.Parse(datoBuscar).AddDays(1).ToString("yyyy-MM-dd");
 
 
-                string busquedaSQL = string.Format("SELECT j.Nombre AS juego, c.Nombres AS nombre_cliente, c.Identificacion, convert(date, a.Fecha) as Fecha_Factura FROM Facturas a INNER JOIN productos j ON a.IdProducto = j.IdProducto INNER JOIN clientes c ON a.IdCliente = c.Identificacion WHERE a.Fecha >= '{0}' AND a.Fecha < '{1}'", fechaInicio, fechaFin);
+                string busquedaSQL = string.Format("SELECT * FROM Facturas a WHERE a.Fecha >= '{0}' AND a.Fecha < '{1}'", fechaInicio, fechaFin);
                 cn.Open();
                 SqlDataAdapter sqlAD = new SqlDataAdapter(busquedaSQL, cn);
 
@@ -108,6 +116,65 @@ namespace WebApplication1.Controllers
                 sqlAD.Fill(datos);
             }
             return View(datos);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult EliminarFacturas(int IdFactura)
+        {
+            using (SqlConnection cn = new SqlConnection(ConexionDB.conexion))
+            {
+                string borrarproductosSQL = string.Format("DELETE FROM ProductosFactura WHERE IdFactura = {0}", IdFactura);
+                string borrarFacturasSQL = string.Format("DELETE FROM Facturas WHERE IdFactura = {0}", IdFactura);
+
+                cn.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = cn;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = borrarproductosSQL;
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = borrarFacturasSQL;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return RedirectToAction("listaFacturas", "Facturas");
+        }
+
+
+        [HttpPost]
+        public ActionResult AgregarProductos(int IdFactura, ProductosFactura productosFactura){
+            using (SqlConnection cn = new SqlConnection(ConexionDB.conexion))
+            {
+                //se agregan los valores a el proceso sp_RegistrarAlquiler
+                SqlCommand cmd = new SqlCommand("sp_AgregarProductoAFactura", cn);
+                cmd.Parameters.AddWithValue("IdFactura", IdFactura);
+                cmd.Parameters.AddWithValue("IdProducto", productosFactura.IdProducto);
+                cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cn.Open();
+
+                cmd.ExecuteNonQuery();
+
+                registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
+                mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+            }
+
+            ViewData["Mensajes"] = mensaje;
+
+            if (registrado)
+            {
+                return RedirectToAction("listaFacturas", "Facturas");
+            }
+            else
+            {
+                ViewData["Mensaje"] = mensaje;
+                return View();
+            }
         }
     }
 }

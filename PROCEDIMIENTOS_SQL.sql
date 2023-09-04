@@ -99,25 +99,49 @@ go
 --PROCEDIMIENTO PARA REGISTRAR FACTURAS--
 Create proc sp_RegistrarFacturas(
 @IdCliente varchar(150),
-@IdProducto varchar(100),
 --Mensajes de salida--
 @Registrado bit output,
 @Mensaje varchar(100) output
 )as 
 begin
-	set nocount on
 	--validando si el producto existe--
-	if(exists(select * from Productos where IdProducto = @IdProducto))
+	if(exists(select * from Clientes where Identificacion = @IdCliente))
 		begin
-			insert into Facturas(IdCliente,IdProducto)
-			values (@IdCliente, @IdProducto)
+			insert into Facturas(IdCliente)
+			values (@IdCliente)
 			set @Registrado = 1
-			set @Mensaje = 'Factura registrada exitosamente'
+			set @Mensaje = 'Factura creada exitosamente'
 		end	
 		else
 			begin
 			set @Registrado = 0
-			set @Mensaje = 'No se pudo registrar la factura'
+			set @Mensaje = 'No se pudo crear la factura'
+			end
+end
+go
+
+
+--PROCEDIMIENTO PARA REGISTRAR FACTURAS--
+Create proc sp_AgregarProductoAFactura(
+@IdFactura int,
+@IdProducto int,
+--Mensajes de salida--
+@Registrado bit output,
+@Mensaje varchar(100) output
+)as 
+begin
+	--validando si el producto existe--
+	if(exists(select * from Facturas where IdFactura = @IdFactura))
+		begin
+			insert into ProductosFactura(IdFactura,IdProducto)
+			values (@IdFactura,@IdProducto)
+			set @Registrado = 1
+			set @Mensaje = 'Producto registrado con exito'
+		end	
+		else
+			begin
+			set @Registrado = 0
+			set @Mensaje = 'No se pudo registrar el producto'
 			end
 end
 go

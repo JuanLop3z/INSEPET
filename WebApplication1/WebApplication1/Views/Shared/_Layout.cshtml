@@ -18,13 +18,13 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
                 </button>
-                @Html.ActionLink("INSEPET", "Facturas", "Facturas", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("INSEPET", "listaFacturas", "Facturas", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Clientes", "ListarClientes", "Clientes")</li>
                     <li>@Html.ActionLink("Productos", "listarProductos", "Productos")</li>
-                    <li>@Html.ActionLink("Facturas", "RegistrarFacturas", "Facturas")</li>
+                    <li>@Html.ActionLink("Facturas", "RegistrarFactura", "Facturas")</li>
                 </ul>
             </div>
         </div>

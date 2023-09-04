@@ -102,7 +102,7 @@ namespace WebApplication1.Controllers
             if (usuario.IdUsuario != 0)
             {
                 Session["usuario"] = usuario;
-                return RedirectToAction("Principal", "Principal");
+                return RedirectToAction("RegistrarFactura", "Facturas");
             }
             else
             {

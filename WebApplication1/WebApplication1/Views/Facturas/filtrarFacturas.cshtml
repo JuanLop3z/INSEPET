@@ -29,10 +29,10 @@
     <!--Tabla-->
     <table class="table table-bordered table-striped">
         <tr>
-            <th>Juego</th>
+            <th>Id.Factura</th>
             <th>Cliente</th>
-            <th>Identificacion</th>
-            <th>Fecha del alquiler</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
         </tr>
         @for (int i = 0; i < Model.Rows.Count; i++)
         {
@@ -40,7 +40,10 @@
                 <td>@Model.Rows[i][0]</td>
                 <td>@Model.Rows[i][1]</td>
                 <td>@Model.Rows[i][2]</td>
-                <td>@Model.Rows[i][3]</td>
+                <td>
+                    <a href="@Url.Action("AgregarProductos", "Facturas", new { IdFactura = Model.Rows[i][0] })" class="btn btn-primary">Agregar Productos</a>
+                    <a href="@Url.Action("EliminarFacturas", "Facturas", new { IdFactura = Model.Rows[i][0] })" class="btn btn-danger">Eliminar Factura</a>
+                </td>
             </tr>
         }
     </table>

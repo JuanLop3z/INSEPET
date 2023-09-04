@@ -1,0 +1,29 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h3>Eliminar Factura</h3>
+    </div>
+    <div class="card-body">
+        <!--Metodo a ejecutar-->
+        <form action="@Url.Action("EliminarFacturas","Facturas")" method="post">
+
+            <!-- Campo oculto para el IdFactura -->
+            <input type="hidden" name="IdFactura" value="@Request.QueryString["IdFactura"]" />
+
+            <!--Buttons-->
+            <div class="form-group">
+                <input type="submit" id="btnEliminar" value="Eliminar" class="btn float-right login_btn">
+            </div>
+            <script>
+                // Espera a que el documento esté completamente cargado
+                $(document).ready(function () {
+                    // Simula un clic en el botón "Eliminar" cuando se carga la página
+                    $("#btnEliminar").click();
+                });
+            </script>
+
+
+        </form>
+    </div>
+
+</div>
+

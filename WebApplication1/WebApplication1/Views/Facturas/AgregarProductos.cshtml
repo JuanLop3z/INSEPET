@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "RegistrarFactura";
+    ViewBag.Title = "AgregarProductos";
 }
 
 <!DOCTYPE html>
@@ -17,18 +17,21 @@
         <div class="d-flex justify-content-center h-100">
             <div class="card">
                 <div class="card-header">
-                    <h3>Registrar Nueva Factura</h3>
+                    <h3>Agregar Productos a Factura</h3>
                 </div>
                 <div class="card-body">
                     <!--Metodo a ejecutar-->
-                    <form action="@Url.Action("RegistrarFactura","Facturas")" method="post">
+                    <form action="@Url.Action("AgregarProductos","Facturas")" method="post">
+
+                        <!-- Campo oculto para el IdFactura -->
+                        <input type="hidden" name="IdFactura" value="@Request.QueryString["IdFactura"]" />
 
                         <!--Campos de escritura-->
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" name="IdCliente" class="form-control" placeholder="Identificacion del Cliente">
+                            <input type="text" name="IdProducto" class="form-control" placeholder="Id del productos">
                         </div>
 
 
@@ -43,7 +46,7 @@
 
                         <!--Buttons-->
                         <div class="form-group">
-                            <input type="submit" value="Crear Factura" class="btn float-right login_btn">
+                            <input type="submit" value="Agregar Producto" class="btn float-right login_btn">
                         </div>
                         <div class="form-group">
                             <input type="reset" value="Borrar" class="btn float-left cancel_btn">
