@@ -88,7 +88,7 @@ namespace WebApplication1.Controllers
 
                 cn.Open();
                 
-                SqlDataAdapter sqlAD = new SqlDataAdapter("SELECT * from Facturas", cn);
+                SqlDataAdapter sqlAD = new SqlDataAdapter("SELECT F.*, C.Nombres AS NombreCliente  FROM Facturas F INNER JOIN Clientes C ON F.IdCliente = C.Identificacion", cn);
 
                 sqlAD.Fill(datos);
 
